@@ -22,6 +22,8 @@
 
 	for(var/myid in poll_ids)
 		var/newq = "BROKEN POLL"
-		var/DBQuery/end_this_poll = dbcon.NewQuery("UPDATE erro_poll_question SET question = [newq], endtime = NOW() WHERE id = [myid]")
-		end_this_poll.Execute()
+		var/DBQuery/end_this_poll = dbcon.NewQuery("UPDATE erro_poll_question SET question = \"[newq]\", endtime = NOW() WHERE id = [myid]")
+		if(!end_this_poll.Execute())
+			var/err = end_this_poll.ErrorMsg()
+			log_game("SQL ERROR updating broken poll with id: [myid]. Error : \[[err]\]\n")
 		sleep(1)
